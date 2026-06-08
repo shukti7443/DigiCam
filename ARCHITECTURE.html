@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>digicam dreams — system architecture</title>
+<style>
+  body {
+    font-family: system-ui, sans-serif;
+    background: #fdf4f8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    color: #2a0d1c;
+  }
+  h1 { font-size: 1.2rem; letter-spacing: 0.1em; margin-bottom: 0.4rem; color: #3a1228; }
+  p  { font-size: 0.78rem; color: #7a2d4f; margin-bottom: 2rem; letter-spacing: 0.05em; }
+  svg { max-width: 760px; width: 100%; }
+
+  /* node colors */
+  .box-gray    { fill: #f1efe8; stroke: #888780; }
+  .box-pink    { fill: #fbeaf0; stroke: #993556; }
+  .box-purple  { fill: #eeedfe; stroke: #534ab7; }
+  .box-coral   { fill: #faece7; stroke: #993c1d; }
+  .box-teal    { fill: #e1f5ee; stroke: #0f6e56; }
+  .box-amber   { fill: #faeeda; stroke: #854f0b; }
+  .box-blue    { fill: #e6f1fb; stroke: #185fa5; }
+
+  .label-title { font-size: 13px; font-weight: 600; fill: #2a0d1c; }
+  .label-sub   { font-size: 11px; fill: #5f5e5a; }
+  .arr-line    { stroke: #888780; stroke-width: 1.4; fill: none; }
+  .arr-label   { font-size: 11px; fill: #888780; }
+</style>
+</head>
+<body>
+<h1>digicam dreams ✦ system architecture</h1>
+<p>how a photo goes from upload → vintage digicam look → download</p>
+
+<svg viewBox="0 0 680 640" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#888780" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- USER -->
+  <rect class="box-gray" x="265" y="30" width="150" height="44" rx="8" stroke-width="0.8"/>
+  <text class="label-title" x="340" y="57" text-anchor="middle">User</text>
+
+  <line class="arr-line" x1="340" y1="74" x2="340" y2="108" marker-end="url(#arr)"/>
+  <text class="arr-label" x="350" y="96">upload photo</text>
+
+  <!-- DROP ZONE -->
+  <rect class="box-pink" x="220" y="108" width="240" height="56" rx="8" stroke-width="0.8"/>
+  <text class="label-title" x="340" y="130" text-anchor="middle">Drop zone</text>
+  <text class="label-sub"   x="340" y="150" text-anchor="middle">drag-and-drop or file picker</text>
+
+  <line class="arr-line" x1="340" y1="164" x2="340" y2="198" marker-end="url(#arr)"/>
+  <text class="arr-label" x="350" y="186">FileReader API</text>
+
+  <!-- IMAGE DECODE -->
+  <rect class="box-purple" x="220" y="198" width="240" height="56" rx="8" stroke-width="0.8"/>
+  <text class="label-title" x="340" y="220" text-anchor="middle">Image decode</text>
+  <text class="label-sub"   x="340" y="240" text-anchor="middle">draws to hidden canvas</text>
+
+  <line class="arr-line" x1="340" y1="254" x2="340" y2="288" marker-end="url(#arr)"/>
+
+  <!-- FILTER PRESETS -->
+  <rect class="box-coral" x="60" y="288" width="200" height="56" rx="8" stroke-width="0.8"/>
+  <text class="label-title" x="160" y="310" text-anchor="middle">Filter presets</text>
+  <text class="label-sub"   x="160" y="330" text-anchor="middle">polaroid · sepia · golden · digicam…</text>
+
+  <!-- SLIDERS -->
+  <rect class="box-coral" x="420" y="288" width="200" height="56" rx="8" stroke-width="0.8"/>
+  <text class="label-title" x="520" y="310" text-anchor="middle">Manual sliders</text>
+  <text class="label-sub"   x="520" y="330" text-anchor="middle">brightness · contrast · grain…</text>
+
+  <!-- arrows to canvas -->
+  <path class="arr-line" d="M160 344 L160 390 L260 390" marker-end="url(#arr)"/>
+  <path class="arr-line" d="M520 344 L520 390 L420 390" marker-end="url(#arr)"/>
+
+  <!-- CANVAS PROCESSING -->
+  <rect class="box-teal" x="200" y="368" width="280" height="56" rx="8" stroke-width="0.8"/>
+  <text class="label-title" x="340" y="390" text-anchor="middle">Canvas API processing</text>
+  <text class="label-sub"   x="340" y="410" text-anchor="middle">pixel manipulation · getImageData</text>
+
+  <line class="arr-line" x1="340" y1="424" x2="340" y2="455" marker-end="url(#arr)"/>
+
+  <!-- EFFECTS ROW -->
+  <rect class="box-amber" x="40"  y="455" width="128" height="44" rx="8" stroke-width="0.8"/>
+  <text class="label-title" x="104" y="473" text-anchor="middle">Grain</text>
+  <text class="label-sub"   x="104" y="489" text-anchor="middle">luminance noise</text>
+
+  <rect class="box-amber" x="184" y="455" width="128" height="44" rx="8" stroke-width="0.8"/>
+  <text class="label-title" x="248" y="473" text-anchor="middle">Vignette</text>
+  <text class="label-sub"   x="248" y="489" text-anchor="middle">radial gradient</text>
+
+  <rect class="box-amber" x="328" y="455" width="128" height="44" rx="8" stroke-width="0.8"/>
+  <text class="label-title" x="392" y="473" text-anchor="middle">Aberration</text>
+  <text class="label-sub"   x="392" y="489" text-anchor="middle">RGB channel shift</text>
+
+  <rect class="box-amber" x="472" y="455" width="140" height="44" rx="8" stroke-width="0.8"/>
+  <text class="label-title" x="542" y="473" text-anchor="middle">Timestamp</text>
+  <text class="label-sub"   x="542" y="489" text-anchor="middle">y2k date overlay</text>
+
+  <!-- connector lines to effects -->
+  <line stroke="#d3d1c7" stroke-width="1" x1="340" y1="455" x2="104" y2="455"/>
+  <line stroke="#d3d1c7" stroke-width="1" x1="340" y1="455" x2="542" y2="455"/>
+
+  <!-- arrows from effects to jpeg -->
+  <path class="arr-line" d="M104 499 L104 540 L260 540" marker-end="url(#arr)"/>
+  <path class="arr-line" d="M542 499 L542 540 L420 540" marker-end="url(#arr)"/>
+  <line class="arr-line" x1="248" y1="499" x2="248" y2="540" marker-end="url(#arr)"/>
+  <line class="arr-line" x1="392" y1="499" x2="392" y2="540" marker-end="url(#arr)"/>
+
+  <!-- JPEG RE-ENCODE -->
+  <rect class="box-blue" x="200" y="520" width="280" height="56" rx="8" stroke-width="0.8"/>
+  <text class="label-title" x="340" y="542" text-anchor="middle">JPEG re-encode</text>
+  <text class="label-sub"   x="340" y="562" text-anchor="middle">compression artifacts for realism</text>
+
+  <line class="arr-line" x1="340" y1="576" x2="340" y2="608" marker-end="url(#arr)"/>
+  <text class="arr-label" x="350" y="598">download .jpg</text>
+</svg>
+
+</body>
+</html>
